@@ -133,12 +133,15 @@ const Home = ({ cart, setCart }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);  // Track authentication state
   const navigate = useNavigate();
 
+  // Check user authentication
   const fetchUser = async () => {
     const token = localStorage.getItem("user");
     console.log("Stored token:", token); // Check if the token is stored
     if (!token) {
+      setIsAuthenticated(false);
       navigate("/login"); // Redirect to login if no token found
       return;
     }
@@ -151,18 +154,21 @@ const Home = ({ cart, setCart }) => {
       console.log("Fetched user data:", data); // Check if user data is returned
       if (data) {
         localStorage.setItem("user", JSON.stringify(data)); // Store user data in localStorage
+        setIsAuthenticated(true); // Update authentication state
       } else {
+        setIsAuthenticated(false);
         navigate("/login"); // Redirect to login if user data is not valid
       }
     } catch (error) {
       console.error("Error fetching user:", error);
+      setIsAuthenticated(false);
       navigate("/login"); // Redirect to login if there is an error
     }
   };
 
   useEffect(() => {
     fetchUser(); // Call fetchUser when the component mounts
-  }, [navigate]);
+  }, []);
 
   // Fetch product data
   useEffect(() => {
@@ -193,6 +199,7 @@ const Home = ({ cart, setCart }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user"); // Remove user data on logout
+    setIsAuthenticated(false);  // Update authentication state
     navigate("/login"); // Redirect to login page
   };
 
@@ -251,4 +258,3 @@ const Home = ({ cart, setCart }) => {
 };
 
 export default Home;
-
