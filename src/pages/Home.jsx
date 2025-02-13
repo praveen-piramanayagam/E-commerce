@@ -133,13 +133,14 @@ const Home = ({ cart, setCart }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);  // Track authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track auth state
   const navigate = useNavigate();
 
-  // Check user authentication
+  // Function to check if the user is authenticated
   const fetchUser = async () => {
     const token = localStorage.getItem("user");
     console.log("Stored token:", token); // Check if the token is stored
+
     if (!token) {
       setIsAuthenticated(false);
       navigate("/login"); // Redirect to login if no token found
@@ -151,10 +152,11 @@ const Home = ({ cart, setCart }) => {
         credentials: "include", // Send session cookies with the request
       });
       const data = await res.json();
-      console.log("Fetched user data:", data); // Check if user data is returned
+      console.log("Fetched user data:", data);
+
       if (data) {
         localStorage.setItem("user", JSON.stringify(data)); // Store user data in localStorage
-        setIsAuthenticated(true); // Update authentication state
+        setIsAuthenticated(true); // Update auth state to true
       } else {
         setIsAuthenticated(false);
         navigate("/login"); // Redirect to login if user data is not valid
@@ -166,12 +168,15 @@ const Home = ({ cart, setCart }) => {
     }
   };
 
+  // Check user authentication when the component mounts
   useEffect(() => {
-    fetchUser(); // Call fetchUser when the component mounts
+    fetchUser();
   }, []);
 
   // Fetch product data
   useEffect(() => {
+    if (!isAuthenticated) return; // Don't fetch products if not authenticated
+
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -184,7 +189,7 @@ const Home = ({ cart, setCart }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [isAuthenticated]); // Fetch products when user is authenticated
 
   const handleAddToCart = (item) => {
     const itemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
@@ -199,7 +204,7 @@ const Home = ({ cart, setCart }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user"); // Remove user data on logout
-    setIsAuthenticated(false);  // Update authentication state
+    setIsAuthenticated(false); // Set auth state to false
     navigate("/login"); // Redirect to login page
   };
 
