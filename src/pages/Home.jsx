@@ -8,26 +8,32 @@ const Home = ({ cart, setCart }) => {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  
-  // Fetch user profile to check if authenticated
+
+  // Check for logged-in user on page load
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get("https://ecommerce-server-ki4x.onrender.com/profile", {
-          withCredentials: true, // Ensures the cookies are sent with the request
-        });
-        if (!res.data) {
-          navigate("/login"); // Redirect to login if not authenticated
-        } else {
-          localStorage.setItem("user", JSON.stringify(res.data)); // Store user data
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        navigate("/login"); // Redirect to login if error
-      }
-    };
-    fetchUser();
+    const user = localStorage.getItem("user");
+    if (!user) {
+      navigate("/login"); // Redirect to login if no user is found
+    } else {
+      fetchUser(); // Proceed to fetch the user profile if logged in
+    }
   }, [navigate]);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("https://ecommerce-server-ki4x.onrender.com/profile", {
+        withCredentials: true, // Ensures the cookies are sent with the request
+      });
+      if (!res.data) {
+        navigate("/login"); // Redirect to login if not authenticated
+      } else {
+        localStorage.setItem("user", JSON.stringify(res.data)); // Store user data
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      navigate("/login"); // Redirect to login if error occurs
+    }
+  };
 
   // Fetch product data
   useEffect(() => {
