@@ -9,39 +9,27 @@ const Home = ({ cart, setCart }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   
-  // User session check
+  // Fetch user profile to check if authenticated
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("https://ecommerce-server-ki4x.onrender.com/profile", {
-          credentials: "include", // Send session cookies with the request
+        const res = await axios.get("https://ecommerce-server-ki4x.onrender.com/profile", {
+          withCredentials: true, // Ensures the cookies are sent with the request
         });
-        if (!res.ok) {
-          navigate("/login"); // If not authenticated, navigate to login
+        if (!res.data) {
+          navigate("/login"); // Redirect to login if not authenticated
         } else {
-          const data = await res.json();
-          localStorage.setItem("user", JSON.stringify(data)); // Store user data
+          localStorage.setItem("user", JSON.stringify(res.data)); // Store user data
         }
       } catch (error) {
         console.error("Error fetching user:", error);
-        navigate("/login"); // If error occurs, navigate to login
+        navigate("/login"); // Redirect to login if error
       }
     };
     fetchUser();
   }, [navigate]);
-  
-  // Session timeout (set to 10 minutes)
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      // Logout after 10 minutes of inactivity
-      localStorage.removeItem("user");
-      navigate("/login");
-    }, 10 * 60 * 1000); // 10 minutes timeout
-  
-    return () => clearTimeout(timeout); // Clear timeout on component unmount
-  }, [navigate]);
 
-  // Fetching product data
+  // Fetch product data
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -112,9 +100,7 @@ const Home = ({ cart, setCart }) => {
                 <button
                   onClick={() => handleAddToCart(product)}
                   disabled={!!existingItem}
-                  className={`px-4 py-2 mt-3 rounded-lg text-white transition ${
-                    existingItem ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-                  }`}
+                  className={`px-4 py-2 mt-3 rounded-lg text-white transition ${existingItem ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
                 >
                   {existingItem ? "Added to Cart" : "Add to Cart"}
                 </button>
