@@ -10,30 +10,26 @@ const Home = ({ cart, setCart }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is already logged in using localStorage
-    const user = localStorage.getItem("user");
-    if (!user) {
-      navigate("/login"); // If no user found, redirect to login
-    } else {
-      fetchUser(); // Proceed to fetch user profile if logged in
-    }
-  }, [navigate]);
-
-  const fetchUser = async () => {
-    try {
-      const res = await axios.get("https://ecommerce-server-ki4x.onrender.com/profile", {
-        withCredentials: true, // Ensures the cookies are sent with the request
-      });
-      if (!res.data) {
-        navigate("/login"); // Redirect to login if not authenticated
-      } else {
-        localStorage.setItem("user", JSON.stringify(res.data)); // Store user data
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("https://ecommerce-server-ki4x.onrender.com/auth/user", {
+          credentials: "include", // Send session cookies with the request
+        });
+        const data = await res.json();
+        if (data) {
+          localStorage.setItem("user", JSON.stringify(data)); // Store user data
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        navigate("/login"); // Redirect to login if error occurs
       }
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      navigate("/login"); // Redirect to login if error occurs
-    }
-  };
+    };
+  
+    fetchUser();
+  }, [navigate]);
+  
 
   // Fetch product data
   useEffect(() => {
