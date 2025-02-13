@@ -11,6 +11,12 @@ const Home = ({ cart, setCart }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      const userData = localStorage.getItem("user"); // Check if user data exists in localStorage
+      if (userData) {
+        // User data exists, no need to fetch again
+        return;
+      }
+  
       try {
         const res = await fetch("https://ecommerce-server-ki4x.onrender.com/auth/user", {
           credentials: "include", // Send session cookies with the request
@@ -19,7 +25,7 @@ const Home = ({ cart, setCart }) => {
         if (data) {
           localStorage.setItem("user", JSON.stringify(data)); // Store user data
         } else {
-          navigate("/login");
+          navigate("/login"); // If no user data, navigate to login
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -29,6 +35,7 @@ const Home = ({ cart, setCart }) => {
   
     fetchUser();
   }, [navigate]);
+  
   
 
   // Fetch product data
