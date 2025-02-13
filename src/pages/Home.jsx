@@ -9,32 +9,31 @@ const Home = ({ cart, setCart }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = localStorage.getItem("user"); // Check if user data exists in localStorage
-      if (userData) {
-        // User data exists, no need to fetch again
-        return;
-      }
+  const fetchUser = async () => {
+    const token = localStorage.getItem("user");
+    console.log("Stored token:", token); // Check if the token is stored
+    if (!token) {
+      navigate("/login");
+      return;
+    }
   
-      try {
-        const res = await fetch("https://ecommerce-server-ki4x.onrender.com/auth/user", {
-          credentials: "include", // Send session cookies with the request
-        });
-        const data = await res.json();
-        if (data) {
-          localStorage.setItem("user", JSON.stringify(data)); // Store user data
-        } else {
-          navigate("/login"); // If no user data, navigate to login
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        navigate("/login"); // Redirect to login if error occurs
+    try {
+      const res = await fetch("https://ecommerce-server-ki4x.onrender.com/auth/user", {
+        credentials: "include", // Send session cookies with the request
+      });
+      const data = await res.json();
+      console.log("Fetched user data:", data); // Check if user data is returned
+      if (data) {
+        localStorage.setItem("user", JSON.stringify(data));
+      } else {
+        navigate("/login");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      navigate("/login");
+    }
+  };
   
-    fetchUser();
-  }, [navigate]);
   
   
 
