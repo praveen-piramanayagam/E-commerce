@@ -9,13 +9,13 @@ const Home = ({ cart, setCart }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  // Check for logged-in user on page load
   useEffect(() => {
+    // Check if the user is already logged in using localStorage
     const user = localStorage.getItem("user");
     if (!user) {
-      navigate("/login"); // Redirect to login if no user is found
+      navigate("/login"); // If no user found, redirect to login
     } else {
-      fetchUser(); // Proceed to fetch the user profile if logged in
+      fetchUser(); // Proceed to fetch user profile if logged in
     }
   }, [navigate]);
 
