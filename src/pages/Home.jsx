@@ -8,22 +8,27 @@ const Home = ({ cart, setCart }) => {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  
   useEffect(() => {
-    const checkUser = async () => {
+    const fetchUser = async () => {
       try {
         const res = await fetch("https://ecommerce-server-ki4x.onrender.com/profile", {
-          credentials: "include", // Ensure cookies are sent with the request
+          credentials: "include", // Send session cookies with the request
         });
-        if (!res.ok) throw new Error("Unauthorized");
-        const user = await res.json();
-        localStorage.setItem("user", JSON.stringify(user)); // Store user data
-      } catch (err) {
-        console.error("Error:", err);
-        navigate("/login"); // Redirect to login if not authenticated
+        const data = await res.json();
+        if (!data) {
+          navigate("/login");
+        } else {
+          localStorage.setItem("user", JSON.stringify(data)); // Store user data
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        navigate("/login");
       }
     };
-    checkUser();
+    fetchUser();
   }, [navigate]);
+  
   
   
   
