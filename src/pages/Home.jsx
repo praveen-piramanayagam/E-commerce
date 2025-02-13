@@ -9,30 +9,39 @@ const Home = ({ cart, setCart }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   
+  // User session check
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await fetch("https://ecommerce-server-ki4x.onrender.com/profile", {
           credentials: "include", // Send session cookies with the request
         });
-        const data = await res.json();
-        if (!data) {
-          navigate("/login");
+        if (!res.ok) {
+          navigate("/login"); // If not authenticated, navigate to login
         } else {
+          const data = await res.json();
           localStorage.setItem("user", JSON.stringify(data)); // Store user data
         }
       } catch (error) {
         console.error("Error fetching user:", error);
-        navigate("/login");
+        navigate("/login"); // If error occurs, navigate to login
       }
     };
     fetchUser();
   }, [navigate]);
   
+  // Session timeout (set to 10 minutes)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      // Logout after 10 minutes of inactivity
+      localStorage.removeItem("user");
+      navigate("/login");
+    }, 10 * 60 * 1000); // 10 minutes timeout
   
-  
-  
+    return () => clearTimeout(timeout); // Clear timeout on component unmount
+  }, [navigate]);
 
+  // Fetching product data
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
