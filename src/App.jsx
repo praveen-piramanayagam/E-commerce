@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Navbar from "./components/Navbar";
 import Nosuchpage from "./pages/Nosuchpage";
+import Auth from "./pages/Auth";
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -12,8 +13,9 @@ function App() {
     <Router>
       <Navbar cart={cart} />
       <Routes>
-        <Route path="/" element={<Home cart={cart} setCart={setCart} />} />
+        <Route path="/home" element={<Home cart={cart} setCart={setCart} />} />
         <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
+        <Route path="/login" element={<Auth/>}/>
         <Route path="*" element={<Nosuchpage/>} />
       </Routes>
     </Router>

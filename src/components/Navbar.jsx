@@ -10,7 +10,7 @@ const Navbar = ({ cart }) => {
     <nav className="bg-gradient-to-r from-blue-600 to-blue-500 shadow-md p-4">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
       <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
           className="text-white text-lg font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition"
         >
           <Home size={24} />
