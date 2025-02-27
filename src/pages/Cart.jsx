@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Home from './Home';
 
 const Cart = ({ cart, setCart }) => {
   const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false); // State to track script loading
@@ -91,7 +92,16 @@ const Cart = ({ cart, setCart }) => {
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h2>
         {cart.length === 0 ? (
-          <p className="text-gray-600">Your cart is empty.</p>
+          <><p className="text-gray-600">Your cart is empty.</p>
+          
+          <button
+            onClick={() => navigate("/home")}
+            className="text-white text-lg font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            {/* <Home size={24} /> */}
+            <Home size={24} />
+          </button></>
+          
         ) : (
           <>
             {cart.map((item) => (
