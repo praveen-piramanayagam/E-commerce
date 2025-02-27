@@ -22,7 +22,7 @@ const Auth = () => {
         <h1 className="text-2xl font-bold mb-4">Login to Continue</h1>
         <button
           onClick={handleLogin}
-          className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600"
+          className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
         >
           Login with Google
         </button>

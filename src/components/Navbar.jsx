@@ -7,7 +7,7 @@ const Navbar = ({ cart }) => {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-blue-500 shadow-md p-4">
+    <nav className="bg-gradient-to-r from-blue-600 to-blue-500 shadow-md p-4 fixed w-full">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
       <button
           onClick={() => navigate("/home")}
