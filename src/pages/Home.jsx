@@ -13,7 +13,7 @@ const Home = ({ cart, setCart }) => {
     const token = localStorage.getItem("user");
     console.log("Stored token:", token); // Check if the token is stored
     if (!token) {
-      navigate("/login");
+      navigate("/");
       return;
     }
   
@@ -26,11 +26,11 @@ const Home = ({ cart, setCart }) => {
       if (data) {
         localStorage.setItem("user", JSON.stringify(data));
       } else {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("Error fetching user:", error);
-      navigate("/login");
+      navigate("/");
     }
   };
   
@@ -66,7 +66,7 @@ const Home = ({ cart, setCart }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   const filteredProducts = products.filter((product) =>

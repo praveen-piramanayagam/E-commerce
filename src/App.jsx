@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/home" element={<Home cart={cart} setCart={setCart} />} />
         <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
-        <Route path="/login" element={<Auth/>}/>
+        <Route path="/" element={<Auth/>}/>
         <Route path="*" element={<Nosuchpage/>} />
       </Routes>
     </Router>
