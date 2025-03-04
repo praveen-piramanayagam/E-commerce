@@ -18,7 +18,7 @@ const Home = ({ cart, setCart }) => {
     }
   
     try {
-      const res = await fetch("https://ecommerce-server-ki4x.onrender.com/auth/user", {
+      const res = await fetch("http://localhost:5000/auth/user", {
         credentials: "include", // Send session cookies with the request
       });
       const data = await res.json();
@@ -33,7 +33,6 @@ const Home = ({ cart, setCart }) => {
       navigate("/");
     }
   };
-  
   
   
 
