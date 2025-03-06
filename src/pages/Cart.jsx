@@ -97,7 +97,7 @@ const Cart = ({ cart, setCart }) => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h2>
         {cart.length === 0 ? (
           <>
-            <p className="text-gray-600">Your cart is empty!!! Shop products by cliking below button!</p>
+            <p className="text-gray-600">Your cart is empty!!! Go to Home page for purchasing...</p>
             <button
               onClick={() => navigate("/home")} // ✅ Navigate to Home page
               className="bg-blue-500 text-white text-lg font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition mt-4"
