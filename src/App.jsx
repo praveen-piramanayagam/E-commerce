@@ -5,6 +5,8 @@ import Cart from "./pages/Cart";
 import Navbar from "./components/Navbar";
 import Nosuchpage from "./pages/Nosuchpage";
 import Auth from "./pages/Auth";
+import { Navigate } from "react-router-dom";
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -16,8 +18,8 @@ function App() {
         <Route path="/home" element={<Home cart={cart} setCart={setCart} />} />
         <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
         <Route path="/" element={<Auth/>}/>
-        <Route path="*" element={<Auth/>} />
-      </Routes>
+        <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
     </Router>
   );
 }

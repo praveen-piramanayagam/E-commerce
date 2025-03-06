@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Home from './Home';
+import { useNavigate } from "react-router-dom"; // Import navigate
+
 
 const Cart = ({ cart, setCart }) => {
   const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false); // State to track script loading
   const [paymentInProgress, setPaymentInProgress] = useState(false); // State to track payment initiation
+  const navigate = useNavigate(); // Initialize navigate function
+
 
   // Dynamically load Razorpay script only once when the component mounts
   useEffect(() => {
@@ -92,16 +96,15 @@ const Cart = ({ cart, setCart }) => {
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h2>
         {cart.length === 0 ? (
-          <><p className="text-gray-600">Your cart is empty.</p>
-          
-          <button
-            onClick={() => navigate("/home")}
-            className="text-white text-lg font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            {/* <Home size={24} /> */}
-            <Home size={24} />
-          </button></>
-          
+          <>
+            <p className="text-gray-600">Your cart is empty!!! Shop products by cliking below button!</p>
+            <button
+              onClick={() => navigate("/home")} // ✅ Navigate to Home page
+              className="bg-blue-500 text-white text-lg font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition mt-4"
+            >
+              Go to Home
+            </button>
+          </>          
         ) : (
           <>
             {cart.map((item) => (

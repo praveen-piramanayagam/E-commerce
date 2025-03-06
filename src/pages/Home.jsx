@@ -42,8 +42,8 @@ const Home = ({ cart, setCart }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("https://fakestoreapi.com/products");
-        setProducts(response.data);
+        const response = await axios.get("https://dummyjson.com/products");
+        setProducts(response.data.products);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -93,18 +93,19 @@ const Home = ({ cart, setCart }) => {
       </div>
 
       {/* 🛒 Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        {cart && filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
             const existingItem = cart.find((cartItem) => cartItem.id === product.id);
             return (
               <div key={product.id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center transition transform hover:scale-105 hover:shadow-xl">
-                <img src={product.image} alt={product.title} className="h-40 object-contain mb-4" />
+                <img src={product.thumbnail} alt={product.title} className="h-40 object-contain mb-4" />
                 <h2 className="text-lg font-semibold text-gray-800 text-center line-clamp-2">
                   {product.title}
                 </h2>
+                <p className="text-gray-600 font-semibold mt-2">Availability: {product.availabilityStatus || "N/A"}</p>
                 <p className="text-gray-600 font-semibold mt-2">Price: ₹{product.price}</p>
-                <p className="text-yellow-500 text-sm">⭐ {product.rating.rate.toFixed(1)}/5</p>
+                <p className="text-yellow-500 text-sm">⭐ {product.rating.toFixed(1)}/5</p>
                 <button
                   onClick={() => handleAddToCart(product)}
                   disabled={!!existingItem}
